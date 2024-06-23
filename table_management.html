@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テーブル管理</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .qr-code {
+            margin-top: 10px;
+        }
+
+        .table-id {
+            font-weight: bold;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+        }
+
+        @media (max-width: 767px) {
+            .btn-sm {
+                font-size: 0.8rem;
+            }
+
+            .table-id {
+                font-size: 1rem;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.html">ダッシュボード</a>
+            <a class="nav-link" href="menu_management.html">メニュー管理</a>
+            <a class="nav-link" href="menu_layout.html">メニュー配置管理</a>
+            <a class="nav-link" href="order_management.html">注文管理</a>
+            <a class="nav-link" href="kitchen-dashboard.html">キッチンダッシュボード</a>
+            <a class="nav-link" href="review_management.html">レビュー管理</a>
+            <a class="nav-link active" href="table_management.html">テーブル管理</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h2>テーブル管理</h2>
+                </div>
+            </div>
+            <form id="tableForm">
+                <div class="form-group">
+                    <label for="tableId">テーブル番号:</label>
+                    <input type="text" class="form-control" id="tableId" placeholder="テーブル番号を入力" required>
+                </div>
+                <button type="submit" class="btn btn-primary">テーブルを追加</button>
+            </form>
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h3>テーブルリスト</h3>
+                    <ul class="list-group" id="tableList">
+                        <!-- テーブルリストがここに追加されます -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var tables = [];
+
+        document.getElementById('tableForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var tableId = document.getElementById('tableId').value;
+            tables.push(tableId);
+            displayTables();
+            document.getElementById('tableForm').reset();
+        });
+
+        function displayTables() {
+            var tableList = document.getElementById('tableList');
+            tableList.innerHTML = '';
+            tables.forEach(function (tableId, index) {
+                var tableItem = document.createElement('li');
+                tableItem.className = 'list-group-item';
+                tableItem.innerHTML = `
+                    <span class="table-id">${tableId}</span>
+                    <canvas id="qr-code-${index}" class="qr-code"></canvas>
+                    <button class="btn btn-danger btn-sm float-right" onclick="deleteTable(${index})">削除</button>
+                `;
+                tableList.appendChild(tableItem);
+
+                var qr = new QRious({
+                    element: document.getElementById(`qr-code-${index}`),
+                    value: `https://example.com/order?table=${tableId}`
+                });
+            });
+        }
+
+        function deleteTable(index) {
+            tables.splice(index, 1);
+            displayTables();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テンプレート 2 カスタマイズ</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .menu-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-image: url('background.jpg');
+            background-size: cover;
+        }
+
+        .menu-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .menu-section {
+            margin-bottom: 20px;
+        }
+
+        .menu-subtitle {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #555;
+            background: #FFCC66;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .menu-item {
+            text-align: left;
+            position: relative;
+            cursor: move;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .menu-item-name {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .menu-item-price {
+            font-size: 1rem;
+            color: #333;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="menu-container">
+            <div class="menu-title">おしながき</div>
+            <div class="menu-section" id="section1">
+                <div class="menu-subtitle">一品料理</div>
+                <div class="menu-grid" id="menu-grid1">
+                    <div class="menu-item" id="item1">
+                        <div class="menu-item-name">冷奴<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item2">
+                        <div class="menu-item-name">枝豆<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item3">
+                        <div class="menu-item-name">旬のサラダ<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item4">
+                        <div class="menu-item-name">焼き魚<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item5">
+                        <div class="menu-item-name">酢の物<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item6">
+                        <div class="menu-item-name">サラダ<span class="menu-item-price">000円</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-section" id="section2">
+                <div class="menu-subtitle">刺身</div>
+                <div class="menu-grid" id="menu-grid2">
+                    <div class="menu-item" id="item7">
+                        <div class="menu-item-name">本日の刺身盛り<span class="menu-item-price">000円</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-section" id="section3">
+                <div class="menu-subtitle">揚げ物</div>
+                <div class="menu-grid" id="menu-grid3">
+                    <div class="menu-item" id="item8">
+                        <div class="menu-item-name">唐揚げ<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item9">
+                        <div class="menu-item-name">なんこつの唐揚げ<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item10">
+                        <div class="menu-item-name">エビフライ<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item11">
+                        <div class="menu-item-name">ポテトフライ<span class="menu-item-price">000円</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-section" id="section4">
+                <div class="menu-subtitle">焼きもの</div>
+                <div class="menu-grid" id="menu-grid4">
+                    <div class="menu-item" id="item12">
+                        <div class="menu-item-name">餃子<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item13">
+                        <div class="menu-item-name">だし巻き<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item14">
+                        <div class="menu-item-name">豚キムチ<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item15">
+                        <div class="menu-item-name">焼き鳥<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item16">
+                        <div class="menu-item-name">チーズ焼き<span class="menu-item-price">000円</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-section" id="section5">
+                <div class="menu-subtitle">ご飯・麺</div>
+                <div class="menu-grid" id="menu-grid5">
+                    <div class="menu-item" id="item17">
+                        <div class="menu-item-name">おにぎり<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item18">
+                        <div class="menu-item-name">チャーハン<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item19">
+                        <div class="menu-item-name">焼きそば<span class="menu-item-price">000円</span></div>
+                    </div>
+                    <div class="menu-item" id="item20">
+                        <div class="menu-item-name">ラーメン<span class="menu-item-price">000円</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $(".menu-grid").sortable({
+                connectWith: false, // セクション間の移動を禁止
+                stop: function (event, ui) {
+                    saveOrder();
+                }
+            }).disableSelection();
+
+            $(".menu-container").sortable({
+                items: ".menu-section",
+                handle: ".menu-subtitle",
+                stop: function (event, ui) {
+                    saveOrder();
+                }
+            }).disableSelection();
+        });
+
+        function saveOrder() {
+            var order = [];
+            $(".menu-section").each(function (sectionIndex, sectionElement) {
+                var sectionOrder = {
+                    section: $(sectionElement).attr("id"),
+                    items: []
+                };
+                $(sectionElement).find(".menu-item").each(function (itemIndex, itemElement) {
+                    sectionOrder.items.push($(itemElement).attr("id"));
+                });
+                order.push(sectionOrder);
+            });
+            console.log("Saved order:", JSON.stringify(order));
+            // 実際のアプリケーションでは、この順序をサーバーに保存するコードをここに追加します。
+        }
+    </script>
+</body>
+
+</html>

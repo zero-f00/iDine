@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文管理</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .nav-link.active {
+            font-weight: bold;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+        }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.html">ダッシュボード</a>
+            <a class="nav-link" href="menu_management.html">メニュー管理</a>
+            <a class="nav-link" href="menu_layout.html">メニュー配置管理</a>
+            <a class="nav-link active" href="order_management.html">注文管理</a>
+            <a class="nav-link" href="kitchen-dashboard.html">キッチンダッシュボード</a>
+            <a class="nav-link" href="review_management.html">レビュー管理</a>
+            <a class="nav-link" href="table_management.html">テーブル管理</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h2>注文管理</h2>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>注文ID</th>
+                            <th>日時</th>
+                            <th>テーブル番号</th>
+                            <th>ステータス</th>
+                            <th>アクション</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                        <tr>
+                            <td>12345</td>
+                            <td>2024-06-21 12:34</td>
+                            <td>1</td>
+                            <td><span class="badge badge-primary">受注済み</span></td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete(this)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>12346</td>
+                            <td>2024-06-21 12:35</td>
+                            <td>2</td>
+                            <td><span class="badge badge-warning">調理中</span></td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete(this)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>12347</td>
+                            <td>2024-06-21 12:36</td>
+                            <td>3</td>
+                            <td><span class="badge badge-info">調理完了</span></td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete(this)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>12348</td>
+                            <td>2024-06-21 12:37</td>
+                            <td>4</td>
+                            <td><span class="badge badge-success">配膳完了</span></td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete(this)">削除</button>
+                            </td>
+                        </tr>
+                        <!-- 他の注文リストを追加 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 営業終了後に注文を一括削除するボタン -->
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-danger" onclick="confirmDeleteAllCompletedOrders()">営業終了 -
+                        配膳完了の注文を一括削除</button>
+                </div>
+            </div>
+
+            <!-- 削除確認モーダル -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">注文の削除確認</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            この注文を削除してもよろしいですか？
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                            <button type="button" class="btn btn-danger" id="deleteConfirmBtn">削除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 営業終了確認モーダル -->
+            <div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog"
+                aria-labelledby="deleteAllModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteAllModalLabel">営業終了の確認</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            配膳完了の注文をすべて削除してもよろしいですか？
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                            <button type="button" class="btn btn-danger" id="deleteAllConfirmBtn">削除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var deleteTargetButton;
+
+        function confirmDelete(button) {
+            deleteTargetButton = button;
+            $('#deleteModal').modal('show');
+        }
+
+        document.getElementById('deleteConfirmBtn').addEventListener('click', function () {
+            var row = deleteTargetButton.parentElement.parentElement;
+            row.remove();
+            $('#deleteModal').modal('hide');
+        });
+
+        function confirmDeleteAllCompletedOrders() {
+            $('#deleteAllModal').modal('show');
+        }
+
+        document.getElementById('deleteAllConfirmBtn').addEventListener('click', function () {
+            var rows = document.querySelectorAll('.badge-success');
+            rows.forEach(function (badge) {
+                var row = badge.parentElement.parentElement;
+                row.remove();
+            });
+            $('#deleteAllModal').modal('hide');
+        });
+    </script>
+</body>
+
+</html>

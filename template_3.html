@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テンプレート 3 カスタマイズ</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .menu-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .menu-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .menu-subtitle {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #555;
+            cursor: move;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .menu-item {
+            text-align: center;
+            position: relative;
+            cursor: move;
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .menu-item-name {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .menu-item-price {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .badge-new {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="menu-container">
+            <div class="menu-title">Menu</div>
+            <div class="menu-section" id="section1">
+                <div class="menu-subtitle" contenteditable="true">PANCAKE</div>
+                <div class="menu-grid" id="menu-grid1">
+                    <div class="menu-item" id="item1">
+                        <div class="badge-new">NEW</div>
+                        <img src="strawberry_pancake.jpg" alt="Strawberry Pancake">
+                        <div class="menu-item-name">Strawberry Pancake</div>
+                        <div class="menu-item-price">¥1,000</div>
+                    </div>
+                    <div class="menu-item" id="item2">
+                        <img src="blueberry_pancake.jpg" alt="Blueberry Pancake">
+                        <div class="menu-item-name">Blueberry Pancake</div>
+                        <div class="menu-item-price">¥1,000</div>
+                    </div>
+                    <div class="menu-item" id="item3">
+                        <img src="maple_pancake.jpg" alt="Maple Pancake">
+                        <div class="menu-item-name">Maple Pancake</div>
+                        <div class="menu-item-price">¥1,000</div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-section" id="section2">
+                <div class="menu-subtitle" contenteditable="true">DRINK</div>
+                <div class="menu-grid" id="menu-grid2">
+                    <div class="menu-item" id="item4">
+                        <img src="ice_tea.jpg" alt="Ice Tea">
+                        <div class="menu-item-name">Ice Tea</div>
+                        <div class="menu-item-price">¥500</div>
+                    </div>
+                    <div class="menu-item" id="item5">
+                        <img src="orange_juice.jpg" alt="Orange Juice">
+                        <div class="menu-item-name">Orange Juice</div>
+                        <div class="menu-item-price">¥500</div>
+                    </div>
+                    <div class="menu-item" id="item6">
+                        <img src="smoothie.jpg" alt="Smoothie">
+                        <div class="menu-item-name">Smoothie</div>
+                        <div class="menu-item-price">¥500</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $(".menu-grid").sortable({
+                connectWith: false, // セクション間の移動を禁止
+                stop: function (event, ui) {
+                    saveOrder();
+                }
+            }).disableSelection();
+
+            $(".menu-container").sortable({
+                items: ".menu-section",
+                handle: ".menu-subtitle",
+                stop: function (event, ui) {
+                    saveOrder();
+                }
+            }).disableSelection();
+        });
+
+        function saveOrder() {
+            var order = [];
+            $(".menu-section").each(function (sectionIndex, sectionElement) {
+                var sectionOrder = {
+                    section: $(sectionElement).attr("id"),
+                    items: []
+                };
+                $(sectionElement).find(".menu-item").each(function (itemIndex, itemElement) {
+                    sectionOrder.items.push($(itemElement).attr("id"));
+                });
+                order.push(sectionOrder);
+            });
+            console.log("Saved order:", JSON.stringify(order));
+            // 実際のアプリケーションでは、この順序をサーバーに保存するコードをここに追加します。
+        }
+    </script>
+</body>
+
+</html>

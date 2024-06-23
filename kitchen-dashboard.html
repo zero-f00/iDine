@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>キッチン・配膳ダッシュボード</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .nav-link.active {
+            font-weight: bold;
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+        }
+
+        @media (max-width: 767px) {
+            .card-icon {
+                margin-bottom: 10px;
+            }
+
+            .d-flex {
+                display: block !important;
+            }
+
+            .table-responsive {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .btn-sm {
+                font-size: 0.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .btn-secondary {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.html">ダッシュボード</a>
+            <a class="nav-link" href="menu_management.html">メニュー管理</a>
+            <a class="nav-link" href="menu_layout.html">メニュー配置管理</a>
+            <a class="nav-link" href="order_management.html">注文管理</a>
+            <a class="nav-link active" href="kitchen-dashboard.html">キッチンダッシュボード</a>
+            <a class="nav-link" href="review_management.html">レビュー管理</a>
+            <a class="nav-link" href="table_management.html">テーブル管理</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h2>キッチン・配膳ダッシュボード</h2>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>注文ID</th>
+                                    <th>日時</th>
+                                    <th>テーブル番号</th>
+                                    <th>ステータス</th>
+                                    <th>アクション</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>12345</td>
+                                    <td>2024-06-21 12:34</td>
+                                    <td>1</td>
+                                    <td><span class="badge badge-primary">受注済み</span></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm"
+                                            onclick="updateStatus(this, '調理中')">調理開始</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>12346</td>
+                                    <td>2024-06-21 12:35</td>
+                                    <td>2</td>
+                                    <td><span class="badge badge-warning">調理中</span></td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm"
+                                            onclick="updateStatus(this, '調理完了')">調理完了</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>12347</td>
+                                    <td>2024-06-21 12:36</td>
+                                    <td>3</td>
+                                    <td><span class="badge badge-info">調理完了</span></td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm"
+                                            onclick="updateStatus(this, '配膳完了')">配膳完了</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>12348</td>
+                                    <td>2024-06-21 12:37</td>
+                                    <td>4</td>
+                                    <td><span class="badge badge-success">配膳完了</span></td>
+                                    <td>--</td>
+                                </tr>
+                                <!-- 他の注文リストを追加 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(button, status) {
+            var row = button.parentElement.parentElement;
+            var statusBadge = row.querySelector('.badge');
+            if (status === '調理中') {
+                statusBadge.classList.remove('badge-primary');
+                statusBadge.classList.add('badge-warning');
+                statusBadge.textContent = '調理中';
+                button.textContent = '調理完了';
+                button.classList.remove('btn-warning');
+                button.classList.add('btn-info');
+                button.setAttribute('onclick', "updateStatus(this, '調理完了')");
+            } else if (status === '調理完了') {
+                statusBadge.classList.remove('badge-warning');
+                statusBadge.classList.add('badge-info');
+                statusBadge.textContent = '調理完了';
+                button.textContent = '配膳完了';
+                button.classList.remove('btn-info');
+                button.classList.add('btn-success');
+                button.setAttribute('onclick', "updateStatus(this, '配膳完了')");
+            } else if (status === '配膳完了') {
+                statusBadge.classList.remove('badge-info');
+                statusBadge.classList.add('badge-success');
+                statusBadge.textContent = '配膳完了';
+                button.remove();
+            }
+        }
+    </script>
+</body>
+
+</html>

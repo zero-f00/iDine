@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メニュー配置管理</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .template-thumbnail {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .template-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-template {
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+        }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.html">ダッシュボード</a>
+            <a class="nav-link" href="menu_management.html">メニュー管理</a>
+            <a class="nav-link active" href="menu_layout.html">メニュー配置管理</a>
+            <a class="nav-link" href="order_management.html">注文管理</a>
+            <a class="nav-link" href="kitchen-dashboard.html">キッチンダッシュボード</a>
+            <a class="nav-link" href="review_management.html">レビュー管理</a>
+            <a class="nav-link" href="table_management.html">テーブル管理</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h2>メニュー配置管理</h2>
+                    <p>テンプレートを選択して、メニューのレイアウトをカスタマイズしてください。</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 template-container">
+                    <img src="template1_thumbnail.jpg" alt="Template 1" class="template-thumbnail">
+                    <button class="btn btn-primary btn-template" onclick="selectTemplate('template_1')">テンプレート 1
+                        を選択</button>
+                </div>
+                <div class="col-md-4 template-container">
+                    <img src="template2_thumbnail.jpg" alt="Template 2" class="template-thumbnail">
+                    <button class="btn btn-primary btn-template" onclick="selectTemplate('template_2')">テンプレート 2
+                        を選択</button>
+                </div>
+                <div class="col-md-4 template-container">
+                    <img src="template3_thumbnail.jpg" alt="Template 3" class="template-thumbnail">
+                    <button class="btn btn-primary btn-template" onclick="selectTemplate('template_3')">テンプレート 3
+                        を選択</button>
+                </div>
+                <!-- 他のテンプレートも追加可能 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectTemplate(template) {
+            // 選択されたテンプレートに基づいてカスタマイズ画面へ遷移
+            window.location.href = template + ".html";
+        }
+    </script>
+</body>
+
+</html>

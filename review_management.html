@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>レビュー管理</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .nav-link.active {
+            font-weight: bold;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+        }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.html">ダッシュボード</a>
+            <a class="nav-link" href="menu_management.html">メニュー管理</a>
+            <a class="nav-link" href="menu_layout.html">メニュー配置管理</a>
+            <a class="nav-link" href="order_management.html">注文管理</a>
+            <a class="nav-link" href="kitchen-dashboard.html">キッチンダッシュボード</a>
+            <a class="nav-link active" href="review_management.html">レビュー管理</a>
+            <a class="nav-link" href="table_management.html">テーブル管理</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h2>レビュー管理</h2>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>商品名</th>
+                            <th>レビュー内容</th>
+                            <th>ユーザー名</th>
+                            <th>評価</th>
+                            <th>アクション</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewTableBody">
+                        <tr>
+                            <td>商品A</td>
+                            <td>とても美味しかったです！</td>
+                            <td>ユーザーA</td>
+                            <td>★★★★★</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="confirmReport(this)">報告</button>
+                                <button class="btn btn-info btn-sm" onclick="replyReview(this)">返信</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>商品B</td>
+                            <td>普通でした。</td>
+                            <td>ユーザーB</td>
+                            <td>★★★☆☆</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="confirmReport(this)">報告</button>
+                                <button class="btn btn-info btn-sm" onclick="replyReview(this)">返信</button>
+                            </td>
+                        </tr>
+                        <!-- 他のレビューリストを追加 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- レビュー報告確認モーダル -->
+            <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="reportModalLabel">レビューの報告確認</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <textarea class="form-control" id="reportReason" rows="3" placeholder="報告理由を入力"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                            <button type="button" class="btn btn-danger" id="reportConfirmBtn">報告</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 返信モーダル -->
+            <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="replyModalLabel">レビューに返信</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <textarea class="form-control" id="replyContent" rows="3" placeholder="返信内容を入力"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                            <button type="button" class="btn btn-info" id="replyConfirmBtn">返信</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var reportTargetButton;
+
+        function confirmReport(button) {
+            reportTargetButton = button;
+            $('#reportModal').modal('show');
+        }
+
+        document.getElementById('reportConfirmBtn').addEventListener('click', function () {
+            var reportReason = document.getElementById('reportReason').value;
+            if (!reportReason) {
+                alert("報告理由を入力してください。");
+                return;
+            }
+
+            // レビュー報告の処理をここに追加
+            var row = reportTargetButton.parentElement.parentElement;
+            var reviewData = {
+                productName: row.children[0].textContent,
+                reviewContent: row.children[1].textContent,
+                userName: row.children[2].textContent,
+                rating: row.children[3].textContent,
+                reportReason: reportReason
+            };
+
+            // サーバーに報告情報を送信
+            fetch('/report_review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reviewData)
+            }).then(response => {
+                if (response.ok) {
+                    alert("レビューが報告されました。");
+                    $('#reportModal').modal('hide');
+                } else {
+                    alert("レビューの報告に失敗しました。");
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert("レビューの報告に失敗しました。");
+            });
+        });
+
+        function replyReview(button) {
+            $('#replyModal').modal('show');
+        }
+
+        document.getElementById('replyConfirmBtn').addEventListener('click', function () {
+            var replyContent = document.getElementById('replyContent').value;
+            if (!replyContent) {
+                alert("返信内容を入力してください。");
+                return;
+            }
+
+            // 返信の処理をここに追加
+            $('#replyModal').modal('hide');
+        });
+    </script>
+</body>
+
+</html>

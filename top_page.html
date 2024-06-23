@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トップページ</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            padding-top: 20px;
+        }
+
+        .store-section {
+            margin-bottom: 30px;
+        }
+
+        .store-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .store-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .store-link {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .item-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .item-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .item-card-body {
+            padding: 10px;
+        }
+
+        .item-card-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .item-card-text {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .navbar-nav {
+            width: 100%;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .nav-link {
+            padding: 10px 0;
+        }
+
+        .header {
+            padding: 10px 0;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .content {
+            padding-bottom: 70px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .plus-button {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .store-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .store-info .store-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .store-description {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h2>トップ</h2>
+        <button class="plus-button" onclick="addStore()">+</button>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                    aria-selected="true">トップ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="storeA-tab" data-toggle="tab" href="#storeA" role="tab" aria-controls="storeA"
+                    aria-selected="false">お店A</a>
+            </li>
+        </ul>
+    </div>
+    <div class="container content">
+        <div class="tab-content active" id="home">
+            <div class="store-section">
+                <div class="store-header">
+                    <span class="store-title">おすすめのお店</span>
+                    <a href="#" class="store-link">もっと見る</a>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="item-card">
+                            <img src="https://via.placeholder.com/150" alt="商品画像">
+                            <div class="item-card-body">
+                                <div class="item-card-title">お店1</div>
+                                <div class="item-card-text">おすすめ商品1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="item-card">
+                            <img src="https://via.placeholder.com/150" alt="商品画像">
+                            <div class="item-card-body">
+                                <div class="item-card-title">お店2</div>
+                                <div class="item-card-text">おすすめ商品2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="store-section">
+                <div class="store-header">
+                    <span class="store-title">新着のお店</span>
+                    <a href="#" class="store-link">もっと見る</a>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="item-card">
+                            <img src="https://via.placeholder.com/150" alt="商品画像">
+                            <div class="item-card-body">
+                                <div class="item-card-title">お店3</div>
+                                <div class="item-card-text">新着商品1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="item-card">
+                            <img src="https://via.placeholder.com/150" alt="商品画像">
+                            <div class="item-card-body">
+                                <div class="item-card-title">お店4</div>
+                                <div class="item-card-text">新着商品2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="store-section">
+                <div class="store-header">
+                    <span class="store-title">人気のお店</span>
+                    <a href="#" class="store-link">もっと見る</a>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="item-card">
+                            <img src="https://via.placeholder.com/150" alt="商品画像">
+                            <div class="item-card-body">
+                                <div class="item-card-title">お店5</div>
+                                <div class="item-card-text">人気商品1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="item-card">
+                            <img src="https://via.placeholder.com/150" alt="商品画像">
+                            <div class="item-card-body">
+                                <div class="item-card-title">お店6</div>
+                                <div class="item-card-text">人気商品2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="storeA">
+            <div class="store-info">
+                <div class="store-title">お店Aの名前</div>
+                <div class="store-description">お店Aの説明文がここに入ります。</div>
+                <div class="store-hours">営業時間: 10:00 - 22:00</div>
+                <div class="store-contact">連絡先: 123-456-7890</div>
+            </div>
+
+            <div class="gallery">
+                <img src="https://via.placeholder.com/400x200" alt="ギャラリー画像1">
+                <img src="https://via.placeholder.com/400x200" alt="ギャラリー画像2">
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-header">
+                    <span class="menu-title">おすすめ商品</span>
+                    <a href="menu.html" class="menu-link">もっと見る</a>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="menu-item">
+                            <img src="https://via.placeholder.com/150" alt="商品画像">
+                            <div class="menu-item-body">
+                                <div class="menu-item-title">商品1</div>
+                                <div class="menu-item-text">商品説明1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="menu-item">
+                            <img src="https://via.placeholder.com/150" alt="商品画像">
+                            <div class="menu-item-body">
+                                <div class="menu-item-title">商品2</div>
+                                <div class="menu-item-text">商品説明2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-header">
+                    <span class="menu-title">レビュー</span>
+                    <a href="reviews.html" class="menu-link">もっと見る</a>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="menu-item">
+                            <div class="menu-item-body">
+                                <div class="menu-item-title">ユーザー1</div>
+                                <div class="menu-item-text">レビューコメント1</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-body">
+                                <div class="menu-item-title">ユーザー2</div>
+                                <div class="menu-item-text">レビューコメント2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-header">
+                    <span class="menu-title">新着情報</span>
+                    <a href="#" class="menu-link">もっと見る</a>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="menu-item">
+                            <div class="menu-item-body">
+                                <div class="menu-item-title">新着情報1</div>
+                                <div class="menu-item-text">新着情報の詳細がここに入ります。</div>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-body">
+                                <div class="menu-item-title">新着情報2</div>
+                                <div class="menu-item-text">新着情報の詳細がここに入ります。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-light bg-light navbar-expand fixed-bottom">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+                <a class="nav-link active" href="top_page.html">
+                    <i class="fas fa-home"></i><br>ホーム
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="storeA_top_page.html">
+                    <i class="fas fa-store"></i><br>店舗情報
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="menu.html">
+                    <i class="fas fa-utensils"></i><br>メニュー
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="reviews.html">
+                    <i class="fas fa-star"></i><br>レビュー
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="profile.html">
+                    <i class="fas fa-user"></i><br>プロフィール
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTab a').on('click', function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+
+            $('#myTab a').on('shown.bs.tab', function (e) {
+                var target = $(e.target).attr("href");
+                $('.tab-content').removeClass('active');
+                $(target).addClass('active');
+            });
+        });
+
+        function addStore() {
+            // ここにお店を追加する処理を追加します
+            alert('お店を追加します。');
+        }
+    </script>
+</body>
+
+</html>

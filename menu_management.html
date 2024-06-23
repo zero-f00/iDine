@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メニュー管理</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .product-category {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .editing-item {
+            background-color: #fff3cd;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+        }
+
+        @media (max-width: 767px) {
+            .product-description {
+                font-size: 0.8rem;
+            }
+
+            .product-category {
+                font-size: 0.9rem;
+            }
+
+            .btn-sm {
+                font-size: 0.8rem;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.html">ダッシュボード</a>
+            <a class="nav-link active" href="menu_management.html">メニュー管理</a>
+            <a class="nav-link" href="menu_layout.html">メニュー配置管理</a>
+            <a class="nav-link" href="order_management.html">注文管理</a>
+            <a class="nav-link" href="kitchen-dashboard.html">キッチンダッシュボード</a>
+            <a class="nav-link" href="review_management.html">レビュー管理</a>
+            <a class="nav-link" href="table_management.html">テーブル管理</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h2>メニュー管理</h2>
+                </div>
+            </div>
+            <form id="productForm">
+                <div class="form-group">
+                    <label for="productName">商品名:</label>
+                    <input type="text" class="form-control" id="productName" placeholder="商品名を入力" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">価格:</label>
+                    <input type="number" class="form-control" id="price" placeholder="価格を入力" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">説明:</label>
+                    <textarea class="form-control" id="description" rows="3" placeholder="商品の説明を入力" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category">カテゴリ:</label>
+                    <input type="text" class="form-control" id="category" list="categoryList" placeholder="カテゴリを入力"
+                        required>
+                    <datalist id="categoryList">
+                        <!-- 既存のカテゴリを追加 -->
+                    </datalist>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="newTag">
+                    <label class="form-check-label" for="newTag">NEWタグを表示</label>
+                </div>
+                <input type="hidden" id="editIndex">
+                <button type="submit" class="btn btn-primary">商品を追加</button>
+                <button type="button" class="btn btn-secondary" id="cancelEdit" style="display: none;"
+                    onclick="cancelEdit()">編集をキャンセル</button>
+                <button type="button" class="btn btn-danger" id="deleteProduct" style="display: none;"
+                    onclick="deleteProduct()">削除</button>
+            </form>
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h3>商品リスト</h3>
+                    <div class="form-group">
+                        <label for="filterCategory">カテゴリでフィルター:</label>
+                        <select class="form-control" id="filterCategory" onchange="filterProducts()">
+                            <option value="all">すべて表示</option>
+                            <!-- カテゴリオプションがここに追加されます -->
+                        </select>
+                    </div>
+                    <ul class="list-group" id="productList">
+                        <!-- 商品リストがここに追加されます -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var categories = new Set();
+        var products = [];
+        var currentEditingIndex = null;
+
+        document.getElementById('productForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var productName = document.getElementById('productName').value;
+            var price = document.getElementById('price').value;
+            var description = document.getElementById('description').value;
+            var category = document.getElementById('category').value;
+            var newTag = document.getElementById('newTag').checked;
+            var editIndex = document.getElementById('editIndex').value;
+
+            if (editIndex) {
+                // 編集モード
+                products[editIndex] = { productName, price, description, category, newTag };
+                document.getElementById('editIndex').value = '';
+                document.querySelector('button[type="submit"]').textContent = '商品を追加';
+                document.getElementById('cancelEdit').style.display = 'none';
+                document.getElementById('deleteProduct').style.display = 'none';
+                currentEditingIndex = null;
+            } else {
+                // 新規追加モード
+                products.push({ productName, price, description, category, newTag });
+            }
+
+            categories.add(category);
+            updateCategoryList();
+            updateCategoryFilter();
+            displayProducts();
+            document.getElementById('productForm').reset();
+        });
+
+        function updateCategoryList() {
+            var categoryList = document.getElementById('categoryList');
+            categoryList.innerHTML = '';
+            categories.forEach(function (category) {
+                var option = document.createElement('option');
+                option.value = category;
+                categoryList.appendChild(option);
+            });
+        }
+
+        function updateCategoryFilter() {
+            var filterCategory = document.getElementById('filterCategory');
+            filterCategory.innerHTML = '<option value="all">すべて表示</option>';
+            categories.forEach(function (category) {
+                var option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                filterCategory.appendChild(option);
+            });
+        }
+
+        function displayProducts() {
+            var productList = document.getElementById('productList');
+            productList.innerHTML = '';
+            products.forEach(function (product, index) {
+                var productItem = document.createElement('li');
+                productItem.className = 'list-group-item';
+                productItem.setAttribute('data-category', product.category);
+                if (index === currentEditingIndex) {
+                    productItem.classList.add('editing-item');
+                }
+                var newTagHtml = product.newTag ? '<span class="badge badge-danger">NEW</span> ' : '';
+                productItem.innerHTML = `
+                    ${newTagHtml}
+                    <span class="product-category">${product.category}</span> - ${product.productName} - ${product.price}円
+                    <p class="product-description">${product.description}</p>
+                    <button class="btn btn-warning btn-sm float-right ml-2" onclick="editProduct(${index})">編集</button>
+                `;
+                productList.appendChild(productItem);
+            });
+        }
+
+        function filterProducts() {
+            var selectedCategory = document.getElementById('filterCategory').value;
+            var productList = document.getElementById('productList').children;
+            for (var i = 0; i < productList.length; i++) {
+                var product = productList[i];
+                if (selectedCategory === 'all' || product.getAttribute('data-category') === selectedCategory) {
+                    product.style.display = '';
+                } else {
+                    product.style.display = 'none';
+                }
+            }
+        }
+
+        function editProduct(index) {
+            var product = products[index];
+            document.getElementById('productName').value = product.productName;
+            document.getElementById('price').value = product.price;
+            document.getElementById('description').value = product.description;
+            document.getElementById('category').value = product.category;
+            document.getElementById('newTag').checked = product.newTag;
+            document.getElementById('editIndex').value = index;
+            document.querySelector('button[type="submit"]').textContent = '商品を更新';
+            document.getElementById('cancelEdit').style.display = 'inline-block';
+            document.getElementById('deleteProduct').style.display = 'inline-block';
+            currentEditingIndex = index;
+            displayProducts();
+        }
+
+        function deleteProduct() {
+            if (currentEditingIndex !== null) {
+                products.splice(currentEditingIndex, 1);
+                cancelEdit();
+            }
+        }
+
+        function cancelEdit() {
+            document.getElementById('productForm').reset();
+            document.getElementById('editIndex').value = '';
+            document.querySelector('button[type="submit"]').textContent = '商品を追加';
+            document.getElementById('cancelEdit').style.display = 'none';
+            document.getElementById('deleteProduct').style.display = 'none';
+            currentEditingIndex = null;
+            displayProducts();
+        }
+    </script>
+</body>
+
+</html>
